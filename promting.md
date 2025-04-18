@@ -3,7 +3,7 @@
 
 ---
 
-##  What Is Prompt Engineering?
+## 🚀  What Is Prompt Engineering?
 
 > “The art and science of crafting inputs that guide AI models to produce accurate, useful outputs.”
 
@@ -14,7 +14,7 @@
 
 ---
 
-##  LLM Output Settings (API only)
+## 🚀  LLM Output Settings (API only)
 
 If you access AI via APIs (like OpenAI, Google Gemini), you can control:
 
@@ -33,7 +33,7 @@ If you access AI via APIs (like OpenAI, Google Gemini), you can control:
 
 ---
 
-##  Prompting Techniques
+## 🚀  Prompting Techniques
 
 ### 1. **Zero-shot Prompting**  
 Prompt with **no examples**.  
@@ -50,7 +50,7 @@ Give **2+ examples** to teach the model a pattern.
 
 ---
 
-##  System, Contextual & Role Prompting
+## 🚀  System, Contextual & Role Prompting
 
 ###  **System Prompting**
 - Set the **overall purpose** (e.g., “You are a helpful medical assistant.”)
@@ -65,7 +65,7 @@ Give **2+ examples** to teach the model a pattern.
 
 ---
 
-##  Advanced Prompting Techniques
+## 🚀  Advanced Prompting Techniques
 
 ###  **Step-back Prompting**
 - Ask a **broad question first**, then narrow down.  
@@ -99,7 +99,7 @@ Give **2+ examples** to teach the model a pattern.
 
 ---
 
-##  Best Practices for Prompt Engineering
+## 🚀  Best Practices for Prompt Engineering
 
 1. **Keep it simple**  
    → Clear prompts = Better results
@@ -124,7 +124,7 @@ Give **2+ examples** to teach the model a pattern.
 
 ---
 
-##  Final Takeaways
+## 🚀  Final Takeaways
 
 - Prompt engineering is about **understanding how AI thinks**, and **guiding it well**.
 - Use structured techniques to **control outputs**, **boost reasoning**, and **customize style**.
