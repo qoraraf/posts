@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منهجيات اكتشاف الكواكب الخارجية</title>
+    
+    <!-- استيراد خط Cairo من Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- استيراد Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- استيراد أيقونات Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0d17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4c1d95;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6d28d9;
+        }
+
+        /* تأثيرات الزجاج */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* تأثيرات الحركة عند الظهور */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, visibility;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* حركة الكوكب البسيطة في الهيدر */
+        .orbit-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+        }
+        .star-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #fbbf24 0%, #d97706 100%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px #fbbf24;
+        }
+        .planet-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: spin 4s linear infinite;
+        }
+        .planet-dot {
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            background-color: #3b82f6;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #3b82f6;
+        }
+
+        @keyframes spin {
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-purple-500 selection:text-white">
+
+    <!-- خلفية النجوم المتحركة -->
+    <canvas id="starfield"></canvas>
+
+    <!-- رأس الصفحة -->
+    <header class="relative min-h-[90vh] flex flex-col justify-center items-center text-center px-4 fade-in-section">
+        <div class="orbit-container mb-8">
+            <div class="star-center"></div>
+            <div class="planet-orbit">
+                <div class="planet-dot"></div>
+            </div>
+        </div>
+        
+        <h1 class="text-4xl md:text-7xl font-black mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300">
+            اكتشاف الكواكب الخارجية
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-300 max-w-3xl leading-relaxed font-light">
+            رحلة من الفرضيات النظرية إلى الأدلة الرصدية الدامغة
+        </p>
+
+        <div class="absolute bottom-10 animate-bounce">
+            <i data-lucide="chevron-down" class="w-8 h-8 text-white/50"></i>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-6 py-12 max-w-5xl space-y-24">
+
+        <!-- المقدمة -->
+        <section class="fade-in-section glass-card rounded-2xl p-8 md:p-12 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-purple-600/20 blur-[60px] rounded-full -mr-16 -mt-16"></div>
+            
+            <div class="flex flex-col md:flex-row gap-8 items-start">
+                <div class="flex-1">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-purple-300 border-r-4 border-purple-500 pr-4">نقطة التحول: 1995</h2>
+                    <p class="text-lg text-gray-300 leading-8 mb-4">
+                        شكل عام 1995 نقطة تحول مفصلية في تاريخ علم الفلك، حينما أعلن <span class="text-white font-bold">Michel Mayor</span> و <span class="text-white font-bold">Didier Queloz</span> عن اكتشاف أول كوكب يدور حول نجم شبيه بالشمس. وقد تُوّج هذا الإنجاز بجائزة نوبل في الفيزياء لعام 2019.
+                    </p>
+                    <p class="text-lg text-gray-300 leading-8 bg-white/5 p-4 rounded-lg border-r-2 border-yellow-500">
+                        اللافت في حيثيات الجائزة هو التحديد الدقيق لسبب المنح: "اكتشاف كوكب خارج المجموعة الشمسية يدور حول نجم من النوع الشمسي"، وليس "أول كوكب" على الإطلاق.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- التقنيات -->
+        <div class="grid grid-cols-1 gap-12">
+
+            <!-- 1. التصوير المباشر -->
+            <section class="fade-in-section">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="p-3 bg-blue-600/20 rounded-full text-blue-400">
+                        <i data-lucide="aperture" class="w-8 h-8"></i>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold">1. التصوير المباشر: التحدي البصري</h2>
+                </div>
+                
+                <div class="glass-card p-8 rounded-2xl border-t border-blue-500/30">
+                    <p class="text-gray-300 text-lg leading-8 mb-6">
+                        نظرياً، تبدو الطريقة الأكثر بديهية لاكتشاف كوكب ما هي التقاط صورة له. تُعرف هذه التقنية بـ "التصوير المباشر"، لكنها عملياً تعد الأصعب تقنياً.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 mt-8">
+                        <div class="bg-black/40 p-6 rounded-xl">
+                            <h3 class="text-xl font-bold text-blue-300 mb-3">العقبة: نسبة التباين</h3>
+                            <p class="text-sm text-gray-400 leading-7">
+                                النجوم أجسام شديدة السطوع، بينما الكواكب أجسام معتمة. يسطع النجم بمقدار يفوق الكواكب التابعة له بمليارات المرات، مما يجعل ضوء النجم يطغى على الكوكب.
+                            </p>
+                        </div>
+                        <div class="bg-black/40 p-6 rounded-xl">
+                            <h3 class="text-xl font-bold text-blue-300 mb-3">الحل: الكوروناغراف</h3>
+                            <p class="text-sm text-gray-400 leading-7">
+                                طور العلماء تقنيات مثل "الكوروناغراف" (Coronagraph) لحجب ضوء النجم وتجاوز ظاهرة الحيود، ومع ذلك تظل هذه الطريقة محدودة النجاح وتتطلب تلسكوبات متطورة.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. الطرق غير المباشرة -->
+            <section class="fade-in-section">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="p-3 bg-green-600/20 rounded-full text-green-400">
+                        <i data-lucide="activity" class="w-8 h-8"></i>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold">2. الطرق غير المباشرة: تأثير الجاذبية</h2>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl border-t border-green-500/30 space-y-8">
+                    <p class="text-gray-300 text-lg leading-8">
+                        نظراً لصعوبة الرصد المباشر، تحول علماء الفلك إلى استنتاج وجود الكواكب من خلال تأثيرها على نجومها. ففيزيائياً، يدور النجم والكوكب حول مركز كتلة مشترك.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Astrometry -->
+                        <div class="group relative bg-white/5 p-6 rounded-xl hover:bg-white/10 transition duration-300">
+                            <div class="absolute -top-3 -right-3 bg-gray-700 text-xs px-2 py-1 rounded">صعبة التطبيق</div>
+                            <h3 class="text-xl font-bold text-green-300 mb-3">القياس الفلكي (Astrometry)</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                قياس التغير الطفيف في موقع النجم. فشلت هذه الطريقة تكراراً بسبب تشوهات الضوء التي يسببها الغلاف الجوي للأرض.
+                            </p>
+                        </div>
+
+                        <!-- Doppler -->
+                        <div class="group relative bg-white/5 p-6 rounded-xl border border-green-500/30 hover:bg-white/10 transition duration-300">
+                            <div class="absolute -top-3 -right-3 bg-green-700 text-xs px-2 py-1 rounded">الأكثر فاعلية</div>
+                            <h3 class="text-xl font-bold text-green-300 mb-3">طريقة السرعة الشعاعية (Doppler)</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                قياس التغير في سرعة النجم (ظاهرة دوبلر). عندما يتحرك النجم، يتغير طول موجة الضوء. تعطينا "الحد الأدنى" لكتلة الكوكب.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. توقيت النبض -->
+            <section class="fade-in-section">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="p-3 bg-red-600/20 rounded-full text-red-400">
+                        <i data-lucide="timer" class="w-8 h-8"></i>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold">3. توقيت النبض: دقة في بيئة متطرفة</h2>
+                </div>
+                
+                <div class="glass-card p-8 rounded-2xl border-t border-red-500/30 flex flex-col md:flex-row gap-8 items-center">
+                    <div class="flex-1">
+                        <p class="text-gray-300 text-lg leading-8 mb-4">
+                            قبل 1995، تم رصد كواكب حول نجوم نابضة (Pulsars). هذه النجوم تطلق موجات راديوية بانتظام دقيق يشبه الساعة الذرية.
+                        </p>
+                        <ul class="space-y-3 text-gray-400">
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-red-500"></i>
+                                <span>تعتمد على رصد أي اضطراب طفيف في مواعيد النبضات.</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check-circle" class="w-5 h-5 text-red-500"></i>
+                                <span>في عام 1992 تم إثبات وجود كواكب بهذه الطريقة.</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-500"></i>
+                                <span>تعتبر حالات نادرة واستثنائية جداً.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. طريقة العبور -->
+            <section class="fade-in-section">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="p-3 bg-yellow-600/20 rounded-full text-yellow-400">
+                        <i data-lucide="eclipse" class="w-8 h-8"></i>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold">4. طريقة العبور: الثورة الإحصائية</h2>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl border-t border-yellow-500/30">
+                    <p class="text-gray-300 text-lg leading-8 mb-6">
+                        أحدثت طريقة "العبور" (Transit Method) النقلة النوعية الأكبر. المبدأ الفيزيائي هو قياس التغير في شدة إضاءة النجم (Photometry) عندما يمر كوكب أمامه.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6 mt-8">
+                        <div class="bg-gradient-to-br from-yellow-900/40 to-transparent p-6 rounded-xl border border-yellow-500/20">
+                            <h3 class="text-lg font-bold text-yellow-200 mb-2 flex items-center gap-2">
+                                <i data-lucide="thumbs-up" class="w-4 h-4"></i> المميزات
+                            </h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">
+                                تتيح رصد كواكب صغيرة (بحجم الأرض)، وتسمح بمسح مئات الآلاف من النجوم في وقت واحد.
+                            </p>
+                        </div>
+                        <div class="bg-gradient-to-br from-red-900/40 to-transparent p-6 rounded-xl border border-red-500/20">
+                            <h3 class="text-lg font-bold text-red-200 mb-2 flex items-center gap-2">
+                                <i data-lucide="thumbs-down" class="w-4 h-4"></i> التحديات
+                            </h3>
+                            <p class="text-sm text-gray-400 leading-relaxed">
+                                تعتمد على الاحتمالية الهندسية؛ يجب أن يكون المدار محاذياً لخط الرؤية. تم التغلب عليها بفضل الحجم الهائل للمسوحات.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- الخاتمة -->
+        <footer class="fade-in-section mt-24 text-center pb-12">
+            <div class="glass-card p-8 md:p-12 rounded-3xl inline-block max-w-4xl relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-3xl"></div>
+                <h3 class="text-2xl font-bold text-white mb-4 relative z-10">خلاصة الرحلة</h3>
+                <p class="text-lg text-gray-300 leading-9 relative z-10">
+                    إن تاريخ اكتشاف الكواكب الخارجية هو رحلة من التطور التقني، انتقلت من محاولات بصرية متعثرة إلى قياسات طيفية دقيقة. وقد لعبت "الصدفة" دوراً بارزاً، خصوصاً مع اكتشاف "المشتريات الحارة"، لتمهيد الطريق لفهمٍ أعمق وأشمل لمكاننا في الكون.
+                </p>
+            </div>
+            <div class="mt-8 text-gray-500 text-sm">
+                تم التصميم بحب للعلم 🌌
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // تفعيل الأيقونات
+        lucide.createIcons();
+
+        // 1. تأثيرات الظهور عند التمرير
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // تشغيل الحركة مرة واحدة فقط
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // 2. خلفية النجوم (Canvas)
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let stars = [];
+
+        function initCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            createStars();
+        }
+
+        function createStars() {
+            stars = [];
+            const count = Math.floor((width * height) / 3000); // كثافة النجوم
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.random() * 1.5,
+                    opacity: Math.random(),
+                    speed: Math.random() * 0.2 + 0.05
+                });
+            }
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // رسم الخلفية السوداء مع تدرج خفيف
+            const gradient = ctx.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, '#020617'); // dark blue/black
+            gradient.addColorStop(1, '#0f172a');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = "white";
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.globalAlpha = star.opacity;
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // تحريك النجوم لأعلى ببطء
+                star.y -= star.speed;
+                // إعادة تدوير النجوم
+                if (star.y < 0) {
+                    star.y = height;
+                    star.x = Math.random() * width;
+                }
+            });
+            requestAnimationFrame(animateStars);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        animateStars();
+    </script>
+</body>
+</html>
